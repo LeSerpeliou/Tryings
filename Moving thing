@@ -1,0 +1,161 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+void AffichTab(vector<vector<string>> tab){
+  for (auto ligne : tab){
+    for (auto element : ligne){
+      cout << element << " ";
+    }
+    cout << endl;
+  }
+  cout << "Bas :      touche (y)" << endl;
+  cout << "Haut :     touche (w)" << endl;
+  cout << "Droite :   touche (s)" << endl;
+  cout << "Gauche :   touche (a)" << endl;
+  cout << endl;
+  cout << "Quitter :  touche (q)              ";
+}
+// fonction d'affichage du tableau
+
+void Down(vector<vector<string>> &tab){
+  vector<vector<string>> TabTamp = tab;
+  // tableau tampon servant à stocker les valeurs de tab avant le décalage
+
+  vector<string> LigneTamp = tab.back();
+  // ligne tampon servant à stocker la dernière ligne de tab avant d'être écrasée
+
+  for (int i = 0; i < tab.size()-1; i++){
+    tab[i+1] = TabTamp[i];
+  }
+  tab.front() = LigneTamp;
+  // décalage des lignes vers le bas  
+}
+
+void Up(vector<vector<string>> &tab){
+  vector<vector<string>> TabTamp = tab;
+  // tableau tampon servant à stocker les valeurs de tab avant le décalage
+
+  vector<string> LigneTamp = tab.front();
+  // ligne tampon servant à stocker la première ligne de tab avant d'être écrasée
+
+  for (int i = 0; i < tab.size()-1; i++){
+    tab[i] = TabTamp[i+1];
+  }
+  tab.back() = LigneTamp;
+  // décalage des lignes vers le haut  
+}
+
+void Right(vector<vector<string>> &tab){
+  vector<vector<string>> TabTamp = tab;
+  // stockage de tab avant le décalage
+
+  vector<string> ColonneTamp(tab.size());
+  for (int j = 0; j < tab[0].size(); j++){
+    ColonneTamp[j] = tab[j].back();
+  }
+  // stockage de la dernière colonne de tab avant d'être écrasée
+
+  for (int i = 0; i < tab.size(); i++){
+    for (int j = 0; j < tab[i].size()-1 ; j++){
+      tab[i][j+1] = TabTamp[i][j];
+    }
+  }
+  // décalage des lignes vers la droite
+
+  for (int j = 0; j < tab[0].size(); j++){
+    tab[j][0] = ColonneTamp[j];
+  }
+}
+
+void Left(vector<vector<string>> &tab){
+  vector<vector<string>> TabTamp = tab;
+  // stockage de tab avant le décalage
+
+  vector<string> ColonneTamp(tab.size());
+  for (int j = 0; j < tab[0].size(); j++){
+    ColonneTamp[j] = tab[j].front();
+  }
+  // stockage de la première colonne de tab avant d'être écrasée
+
+  for (int i = 0; i < tab.size(); i++){
+    for (int j = 0; j < tab[i].size()-1 ; j++){
+      tab[i][j] = TabTamp[i][j+1];
+    }
+  }
+  // décalage des lignes vers la droite
+
+  for (int j = 0; j < tab[0].size(); j++){
+    tab[j][tab.size()-1] = ColonneTamp[j];
+  }
+}
+
+int main(){
+
+  vector<vector<string>> Tableau{
+  {" "," "," "," "," "," "," "," "," "," "},
+  {" "," "," "," "," "," "," "," "," "," "},
+  {" "," "," "," "," "," "," "," "," "," "},
+  {" "," "," "," "," "," "," "," "," "," "},
+  {" "," "," "," ","X","O"," "," "," "," "},
+  {" "," "," "," ","O","X"," "," "," "," "},
+  {" "," "," "," "," "," "," "," "," "," "},
+  {" "," "," "," "," "," "," "," "," "," "},
+  {" "," "," "," "," "," "," "," "," "," "},
+  {" "," "," "," "," "," "," "," "," "," "},
+  };
+
+  AffichTab(Tableau);
+
+  string entree;
+  cin >> entree;
+
+  while (entree != "q"){
+    if (entree == "y"){
+      Down(Tableau);
+      cout << endl << endl;
+
+      AffichTab(Tableau);
+
+      cin >> entree;
+
+    } else if (entree == "w"){
+      Up(Tableau);
+      cout << endl << endl;
+
+      AffichTab(Tableau);
+
+      cin >> entree;
+
+    } else if (entree == "s"){
+      Right(Tableau);
+      cout << endl << endl;
+
+      AffichTab(Tableau);
+
+      cin >> entree;
+
+    } else if (entree == "a"){
+      Left(Tableau);
+      cout << endl << endl;
+
+      AffichTab(Tableau);
+
+      cin >> entree;
+
+    } else {
+      cout << endl << endl ;
+
+      AffichTab(Tableau);
+
+      cin >> entree;
+    }
+  }
+
+  if (entree == "q"){
+    cout << "Au revoir !" << endl;
+  }
+
+  return 0;
+}
